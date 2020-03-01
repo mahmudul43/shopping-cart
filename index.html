@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <title>Shopping Cart</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" rel="stylesheet" />
+   <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+<section>
+   <div class="container">
+      <div id="cartArea" class="cart">
+         <div class="col-md-12 col-lg-10 mx-auto">
+            <div class="cart-item">
+               <div class="row">
+                  <div class="col-md-7 center-item">
+                     <img src="images/product-1.png" alt="">
+                     <h5>iPhone 11 128GB Black</h5>
+                  </div>
+
+                  <div class="col-md-5 center-item">
+                     <div class="input-group number-spinner">
+                        <button class="btn btn-default"><i id="decreaseFirstItem" class="fas fa-minus"></i></button>
+                        <input id="firstItemInCart" type="text" class="form-control text-center" value="1">
+                        <button class="btn btn-default"><i id="increaseFirstItem" class="fas fa-plus"></i></button>
+                     </div>
+                     <h5>$<span id="firstItemPrice">400</span></h5>
+                     <img src="images/remove.png" alt="" class="remove-item">
+                  </div>
+               </div>
+            </div>
+
+            <div class="cart-item">
+               <div class="row">
+                  <div class="col-md-7 center-item mx-auto">
+                     <img src="images/product-2.png" alt="">
+                     <h5>iPhone 11 Silicone Case - Black</h5>
+                  </div>
+                  <div class="col-md-5 center-item">
+                     <div class="input-group number-spinner">
+                        <button class="btn btn-default"><i id="decreaseSecondItem" class="fas fa-minus"></i></button>
+                        <input id="secondItemInCart" type="text" class="form-control text-center" value="1">
+                        <button class="btn btn-default"><i id="increaseSecondItem" class="fas fa-plus"></i></button>
+
+                     </div>
+                     <h5>$<span id="secondItemPrice">200</span></h5>
+                     <img src="images/remove.png" alt="" class="remove-item">
+                  </div>
+               </div>
+            </div>
+
+            <div class="cart-item">
+               <div class="row">
+
+                  <div class="col-md-8">
+                     <h5>Subtotal: </h5>
+                     <h5>Tax:</h5>
+                     <h5>Total:</h5>
+                  </div>
+
+                  <div class="col-md-4 status">
+                     <h5>$<span id="sub-total">600</span></h5>
+                     <h5>$<span id="tax-amount">25</span></h5>
+                     <h5>$<span id="final-amount">625</span></h5>
+                  </div>
+               </div>
+            </div>
+            <div class="col-md-12 pt-4 pb-4">
+               <button id="checkOutButton" type="button" class="btn btn-success check-out">Check Out</button>
+            </div>
+         </div>
+      </div>
+      <div id="checkOutArea" class="checkout text-center">
+         <h1>CheckOut Page</h1>
+         <p>
+            Fill the following information to checkout
+         </p>
+         <div id="checkout-area">
+            <div class="submit-data">
+                <h4>Login</h4>
+                <input type="text" name="name" class="form-control" placeholder="Name Here" required="">
+                <br>
+                <input type="text" name="address" class="form-control" placeholder="Address Here" required="">
+                <br>
+                <button id="cart-page-button" class="btn btn-success">Cart Page</button>
+            </div>
+        </div>
+      </div>
+   </div>
+</section>
+
+
+   <!--JavaScript Part-->
+   <script>
+         //Handling Increase Button of Items
+         const first_increase_item_button = document.getElementById("increaseFirstItem");
+         first_increase_item_button.addEventListener("click",function(){
+               increase_cart_elements_quantity("firstItemInCart","firstItemPrice");
+         })
+
+         const second_increase_item_button = document.getElementById("increaseSecondItem");
+         second_increase_item_button.addEventListener("click",function(){
+               increase_cart_elements_quantity("secondItemInCart","secondItemPrice");
+         })
+
+
+         //Handling Decrease Button of Items
+         const first_decrease_item_button = document.getElementById("decreaseFirstItem");
+         first_decrease_item_button.addEventListener("click",function(){
+            decrease_cart_elements_quantity("firstItemInCart","firstItemPrice");
+         })
+
+         const second_decrease_item_button = document.getElementById("decreaseSecondItem");
+         second_decrease_item_button.addEventListener("click",function(){
+               decrease_cart_elements_quantity("secondItemInCart","secondItemPrice");
+         })
+
+         //Checkout Button Event
+         const checkOutButton = document.getElementById("checkOutButton");
+         checkOutButton.addEventListener("click",function(){
+            const cartArea=document.getElementById("cartArea");
+            cartArea.style.display="none";
+            const checkOutArea=document.getElementById("checkOutArea");
+            checkOutArea.style.display="block";
+         })
+
+         //Cart-Page Button Event
+         const cartPageButton = document.getElementById("cart-page-button");
+         cartPageButton.addEventListener("click",function(){
+            const checkOutArea=document.getElementById("checkOutArea");
+            checkOutArea.style.display="none";
+            const cartArea=document.getElementById("cartArea");
+            cartArea.style.display="block";
+         })
+
+
+
+        //Increase Button Functionality
+        function increase_cart_elements_quantity(id1,id2){
+            const increased_item=document.getElementById(id1).value;
+            const increased_item_number= parseFloat(increased_item);
+            const permanent_item= increased_item_number+1;
+            document.getElementById(id1).value=permanent_item;
+            const increased_current_price=document.getElementById(id2).innerText;
+            const increased_current_price_number=parseFloat(increased_current_price);
+            var unit_price=400;
+            const first_updated_price=permanent_item*unit_price;
+            document.getElementById(id2).innerText=first_updated_price;
+            total_amount();
+        }
+
+
+        //Decrease Button Functionality
+        function decrease_cart_elements_quantity(id1,id2){
+            const decreased_item=document.getElementById(id1).value;
+            const decreased_item_number= parseFloat(decreased_item);
+            if(decreased_item_number>0){
+               const permanent_item= decreased_item_number-1;
+               document.getElementById(id1).value=permanent_item;
+               const decreased_current_price=document.getElementById(id2).innerText;
+               const decreased_current_price_number=parseFloat(decreased_current_price);
+               var unit_price=400;
+               const first_updated_price=permanent_item*unit_price;
+               document.getElementById(id2).innerText=first_updated_price;
+               total_amount();
+               } 
+        }
+
+        //Calculating Total Amount
+        function total_amount(){
+            const firstItemPrice=document.getElementById("firstItemPrice").innerText;
+            const firstItemPriceNumber=parseFloat(firstItemPrice);
+            const secondItemPrice=document.getElementById("secondItemPrice").innerText;
+            const secondItemPriceNumber=parseFloat(secondItemPrice);
+            const sub_total=document.getElementById("sub-total").innerText;
+            const sub_total_value=parseFloat(sub_total);
+            const total_price=firstItemPriceNumber+secondItemPriceNumber;
+            const tax_amount=25;
+
+            document.getElementById("sub-total").innerText=total_price;
+            document.getElementById("final-amount").innerText=total_price+tax_amount;   
+        }
+   </script>
+    <!--JavaScript Part-->
+</body>
+</html>
